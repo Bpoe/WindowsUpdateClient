@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Management.WindowsUpdate.Client", "Client\Microsoft.Management.WindowsUpdate.Client.csproj", "{4E457DB6-8479-4363-9A7F-F78965AC0CB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Management.WindowsUpdate.Tests", "Tests\Microsoft.Management.WindowsUpdate.Tests.csproj", "{28B5E913-D9F0-4FB9-9AF3-082413E0B148}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E457DB6-8479-4363-9A7F-F78965AC0CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E457DB6-8479-4363-9A7F-F78965AC0CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E457DB6-8479-4363-9A7F-F78965AC0CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E457DB6-8479-4363-9A7F-F78965AC0CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28B5E913-D9F0-4FB9-9AF3-082413E0B148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28B5E913-D9F0-4FB9-9AF3-082413E0B148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28B5E913-D9F0-4FB9-9AF3-082413E0B148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28B5E913-D9F0-4FB9-9AF3-082413E0B148}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
