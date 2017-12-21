@@ -1,236 +1,236 @@
-﻿namespace Microsoft.Management.WindowsUpdate
+﻿namespace Microsoft.Management.WindowsUpdate.Client
 {
     using System;
-    using Microsoft.Management.WindowsUpdate.Interop;
+    using Interop;
 
     public class WindowsUpdate : IUpdate
     {
-        internal IUpdate baseIUpdate = null;
+        internal IUpdate BaseIUpdate;
 
         public WindowsUpdate(IUpdate update)
         {
-            this.baseIUpdate = update;
+            this.BaseIUpdate = update;
         }
 
         public void AcceptEula()
         {
-            baseIUpdate.AcceptEula();
+            this.BaseIUpdate.AcceptEula();
         }
 
         public void CopyFromCache(string path, bool toExtractCabFiles)
         {
-            baseIUpdate.CopyFromCache(path, toExtractCabFiles);
+            this.BaseIUpdate.CopyFromCache(path, toExtractCabFiles);
         }
 
         public string Title
         {
-            get { return baseIUpdate.Title; }
+            get { return this.BaseIUpdate.Title; }
         }
 
         public bool AutoSelectOnWebSites
         {
-            get { return baseIUpdate.AutoSelectOnWebSites; }
+            get { return this.BaseIUpdate.AutoSelectOnWebSites; }
         }
 
         public UpdateCollection BundledUpdates
         {
-            get { return baseIUpdate.BundledUpdates; }
+            get { return this.BaseIUpdate.BundledUpdates; }
         }
 
         public bool CanRequireSource
         {
-            get { return baseIUpdate.CanRequireSource; }
+            get { return this.BaseIUpdate.CanRequireSource; }
         }
 
         public ICategoryCollection Categories
         {
-            get { return baseIUpdate.Categories; }
+            get { return this.BaseIUpdate.Categories; }
         }
 
         public object Deadline
         {
-            get { return baseIUpdate.Deadline; }
+            get { return this.BaseIUpdate.Deadline; }
         }
 
         public bool DeltaCompressedContentAvailable
         {
-            get { return baseIUpdate.DeltaCompressedContentAvailable; }
+            get { return this.BaseIUpdate.DeltaCompressedContentAvailable; }
         }
 
         public bool DeltaCompressedContentPreferred
         {
-            get { return baseIUpdate.DeltaCompressedContentPreferred; }
+            get { return this.BaseIUpdate.DeltaCompressedContentPreferred; }
         }
 
         public string Description
         {
-            get { return baseIUpdate.Description; }
+            get { return this.BaseIUpdate.Description; }
         }
 
         public bool EulaAccepted
         {
-            get { return baseIUpdate.EulaAccepted; }
+            get { return this.BaseIUpdate.EulaAccepted; }
         }
 
         public string EulaText
         {
-            get { return baseIUpdate.EulaText; }
+            get { return this.BaseIUpdate.EulaText; }
         }
 
         public string HandlerID
         {
-            get { return baseIUpdate.HandlerID; }
+            get { return this.BaseIUpdate.HandlerID; }
         }
 
         public IUpdateIdentity Identity
         {
-            get { return baseIUpdate.Identity; }
+            get { return this.BaseIUpdate.Identity; }
         }
 
         public IImageInformation Image
         {
-            get { return baseIUpdate.Image; }
+            get { return this.BaseIUpdate.Image; }
         }
 
         public IInstallationBehavior InstallationBehavior
         {
-            get { return baseIUpdate.InstallationBehavior; }
+            get { return this.BaseIUpdate.InstallationBehavior; }
         }
 
         public bool IsBeta
         {
-            get { return baseIUpdate.IsBeta; }
+            get { return this.BaseIUpdate.IsBeta; }
         }
 
         public bool IsDownloaded
         {
-            get { return baseIUpdate.IsDownloaded; }
+            get { return this.BaseIUpdate.IsDownloaded; }
         }
 
         public bool IsHidden
         {
-            get { return baseIUpdate.IsHidden; }
-            set { baseIUpdate.IsHidden = value; }
+            get { return this.BaseIUpdate.IsHidden; }
+            set { BaseIUpdate.IsHidden = value; }
         }
 
         public bool IsInstalled
         {
-            get { return baseIUpdate.IsInstalled; }
+            get { return this.BaseIUpdate.IsInstalled; }
         }
 
         public bool IsMandatory
         {
-            get { return baseIUpdate.IsMandatory; }
+            get { return this.BaseIUpdate.IsMandatory; }
         }
 
         public bool IsUninstallable
         {
-            get { return baseIUpdate.IsUninstallable; }
+            get { return this.BaseIUpdate.IsUninstallable; }
         }
 
         public StringCollection Languages
         {
-            get { return baseIUpdate.Languages; }
+            get { return this.BaseIUpdate.Languages; }
         }
 
         public DateTime LastDeploymentChangeTime
         {
-            get { return baseIUpdate.LastDeploymentChangeTime; }
+            get { return this.BaseIUpdate.LastDeploymentChangeTime; }
         }
 
         public decimal MaxDownloadSize
         {
-            get { return baseIUpdate.MaxDownloadSize; }
+            get { return this.BaseIUpdate.MaxDownloadSize; }
         }
 
         public decimal MinDownloadSize
         {
-            get { return baseIUpdate.MinDownloadSize; }
+            get { return this.BaseIUpdate.MinDownloadSize; }
         }
 
         public StringCollection MoreInfoUrls
         {
-            get { return baseIUpdate.MoreInfoUrls; }
+            get { return this.BaseIUpdate.MoreInfoUrls; }
         }
 
         public string MsrcSeverity
         {
-            get { return baseIUpdate.MsrcSeverity; }
+            get { return this.BaseIUpdate.MsrcSeverity; }
         }
 
         public int RecommendedCpuSpeed
         {
-            get { return baseIUpdate.RecommendedCpuSpeed; }
+            get { return this.BaseIUpdate.RecommendedCpuSpeed; }
         }
 
         public int RecommendedHardDiskSpace
         {
-            get { return baseIUpdate.RecommendedHardDiskSpace; }
+            get { return this.BaseIUpdate.RecommendedHardDiskSpace; }
         }
 
         public int RecommendedMemory
         {
-            get { return baseIUpdate.RecommendedMemory; }
+            get { return this.BaseIUpdate.RecommendedMemory; }
         }
 
         public string ReleaseNotes
         {
-            get { return baseIUpdate.ReleaseNotes; }
+            get { return this.BaseIUpdate.ReleaseNotes; }
         }
 
         public StringCollection SecurityBulletinIDs
         {
-            get { return baseIUpdate.SecurityBulletinIDs; }
+            get { return this.BaseIUpdate.SecurityBulletinIDs; }
         }
 
         public StringCollection SupersededUpdateIDs
         {
-            get { return baseIUpdate.SupersededUpdateIDs; }
+            get { return this.BaseIUpdate.SupersededUpdateIDs; }
         }
 
         public string SupportUrl
         {
-            get { return baseIUpdate.SupportUrl; }
+            get { return this.BaseIUpdate.SupportUrl; }
         }
 
         public UpdateType Type
         {
-            get { return baseIUpdate.Type; }
+            get { return this.BaseIUpdate.Type; }
         }
 
         public string UninstallationNotes
         {
-            get { return baseIUpdate.UninstallationNotes; }
+            get { return this.BaseIUpdate.UninstallationNotes; }
         }
 
         public IInstallationBehavior UninstallationBehavior
         {
-            get { return baseIUpdate.UninstallationBehavior; }
+            get { return this.BaseIUpdate.UninstallationBehavior; }
         }
 
         public StringCollection UninstallationSteps
         {
-            get { return baseIUpdate.UninstallationSteps; }
+            get { return this.BaseIUpdate.UninstallationSteps; }
         }
 
         public StringCollection KBArticleIDs
         {
-            get { return baseIUpdate.KBArticleIDs; }
+            get { return this.BaseIUpdate.KBArticleIDs; }
         }
 
         public DeploymentAction DeploymentAction
         {
-            get { return baseIUpdate.DeploymentAction; }
+            get { return this.BaseIUpdate.DeploymentAction; }
         }
 
         public DownloadPriority DownloadPriority
         {
-            get { return baseIUpdate.DownloadPriority; }
+            get { return this.BaseIUpdate.DownloadPriority; }
         }
 
         public IUpdateDownloadContentCollection DownloadContents
         {
-            get { return baseIUpdate.DownloadContents; }
+            get { return this.BaseIUpdate.DownloadContents; }
         }
     }
 }

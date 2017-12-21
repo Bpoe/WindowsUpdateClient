@@ -1,7 +1,5 @@
-﻿namespace Microsoft.Management.WindowsUpdate
+﻿namespace Microsoft.Management.WindowsUpdate.Client
 {
-    using System.Collections.Generic;
-
     public enum UpdateServer
     {
         Default = 0,

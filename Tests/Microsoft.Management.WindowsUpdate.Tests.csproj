@@ -36,6 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Management.WindowsUpdate.Interop">
+      <HintPath>..\Client\Microsoft.Management.WindowsUpdate.Interop.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -51,6 +55,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mocks\MockUpdateDownloader.cs" />
+    <Compile Include="Mocks\MockUpdateHistoryEntryCollection.cs" />
+    <Compile Include="Mocks\MockUpdateInstaller.cs" />
+    <Compile Include="Mocks\MockUpdateSearcher.cs" />
+    <Compile Include="Mocks\MockUpdateServiceManager.cs" />
+    <Compile Include="Mocks\MockUpdateSession.cs" />
     <Compile Include="WindowsUpdateClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

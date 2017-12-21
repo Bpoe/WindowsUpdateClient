@@ -1,6 +1,5 @@
-﻿namespace Microsoft.Management.WindowsUpdate
+﻿namespace Microsoft.Management.WindowsUpdate.Client
 {
-    using System;
     using System.Collections.Generic;
     using System.Text;
     using Interop;
@@ -9,7 +8,9 @@
 
     public class WindowsUpdateClient
     {
-        private UpdateSession session;
+        private string DefaultCriteria = "IsInstalled=0 AND IsHidden=0";
+
+        private readonly IUpdateSession3 session;
 
         public UpdateServer UpdateServerSelection { get; set; }
 
@@ -19,78 +20,116 @@
         }
 
         public WindowsUpdateClient(UpdateServer updateServerSelection)
-            : this(
-                  updateServerSelection,
+            : this(updateServerSelection,
                   new UpdateSession { ClientApplicationID = "Microsoft.Management.WindowsUpdate.Client" })
         {
         }
 
-        public WindowsUpdateClient(UpdateServer updateServerSelection, UpdateSession session)
+        public WindowsUpdateClient(UpdateServer updateServerSelection, IUpdateSession3 session)
         {
             this.session = session;
             this.UpdateServerSelection = updateServerSelection;
         }
 
-        public IEnumerable<WindowsUpdate> Search()
+        public ISearchResult Search()
         {
-            var criteria = new Dictionary<string, object>()
-            {
-                { "IsInstalled", false },
-                { "IsHidden", false },
-            };
-
-            return this.Search(criteria);
+            return this.Search(DefaultCriteria);
         }
 
-        public IEnumerable<WindowsUpdate> Search(IDictionary<string, object> criteria)
+        public ISearchResult Search(string criteria)
         {
-            var updates = new List<WindowsUpdate>();
-
-            try
-            {
-                var searcher = this.session.CreateUpdateSearcher();
-                searcher.Online = true;
-                searcher.ServerSelection = (ServerSelection)this.UpdateServerSelection;
-                var searchResults = searcher.Search(GetCriteriaString(criteria));
-
-                foreach (IUpdate update in searchResults.Updates)
-                {
-                    updates.Add(new WindowsUpdate(update));
-                }
-
-                return updates as IEnumerable<WindowsUpdate>;
-            }
-            catch
-            {
-                throw;
-            }
+            var searcher = GetUpdateSearcher();
+            return searcher.Search(criteria);
         }
 
-        public OperationResultCode Download(IEnumerable<WindowsUpdate> updates)
+        public async Task<ISearchResult> SearchAsync(CancellationToken cancellationToken)
+        {
+            return await this.SearchAsync(DefaultCriteria, cancellationToken);
+        }
+
+        public async Task<ISearchResult> SearchAsync(IDictionary<string, object> criteria, CancellationToken cancellationToken)
+        {
+            return await this.SearchAsync(GetCriteriaString(criteria), cancellationToken);
+        }
+
+        public async Task<ISearchResult> SearchAsync(string criteria, CancellationToken cancellationToken)
+        {
+            var searcher = GetUpdateSearcher();
+
+            var callback = new SearchCompletedCallback();
+            var job = searcher.BeginSearch(criteria, callback, null);
+
+            if(await callback.WaitAsync() == false)
+            {
+                job.RequestAbort();
+            }
+
+            if(cancellationToken.IsCancellationRequested)
+            {
+                job.RequestAbort();
+            }
+
+            return searcher.EndSearch(job);
+        }
+
+        public IDownloadResult Download(UpdateCollection updates)
         {
             var downloader = this.session.CreateUpdateDownloader();
-            downloader.Updates = new UpdateCollection();
-            foreach (var update in updates)
-            {
-                downloader.Updates.Add(update.baseIUpdate);
-            }
-
-            var result = downloader.Download();
-            return (OperationResultCode)result.ResultCode;
+            downloader.Updates = updates;
+            return downloader.Download();
         }
 
-        public OperationResultCode Install(IEnumerable<WindowsUpdate> updates)
+        public async Task<IDownloadResult> DownloadAsync(UpdateCollection updates, CancellationToken cancellationToken)
         {
-            var installer = this.session.CreateUpdateInstaller();
+            var downloader = this.session.CreateUpdateDownloader();
+            downloader.Updates = updates;
 
-            installer.Updates = new UpdateCollection();
-            foreach (var update in updates)
+            var completedCallback = new DownloadCompletedCallback();
+            var progressCallback = new DownloadProgressChangedCallback();
+
+            var job = downloader.BeginDownload(progressCallback, completedCallback, null);
+
+            if(await completedCallback.WaitAsync() == false)
             {
-                installer.Updates.Add(update.baseIUpdate);
+                job.RequestAbort();
             }
 
-            var result = installer.Install();
-            return (OperationResultCode)result.ResultCode;
+            if(cancellationToken.IsCancellationRequested)
+            {
+                job.RequestAbort();
+            }
+
+            return downloader.EndDownload(job);
+        }
+
+        public IInstallationResult Install(UpdateCollection updates)
+        {
+            var installer = this.session.CreateUpdateInstaller();
+            installer.Updates = updates;
+            return installer.Install();
+        }
+
+        public async Task<IInstallationResult> InstallAsync(UpdateCollection updates, CancellationToken cancellationToken)
+        {
+            var installer = this.session.CreateUpdateInstaller();
+            installer.Updates = updates;
+
+            var completedCallback = new InstallationCompletedCallback();
+            var progressCallback = new InstallationProgressChangedCallback();
+
+            var job = installer.BeginInstall(progressCallback, completedCallback, null);
+
+            if(await completedCallback.WaitAsync() == false)
+            {
+                job.RequestAbort();
+            }
+
+            if(cancellationToken.IsCancellationRequested)
+            {
+                job.RequestAbort();
+            }
+
+            return installer.EndInstall(job);
         }
 
         private static string GetCriteriaString(IDictionary<string, object> criteria)
@@ -119,6 +158,14 @@
             }
 
             return criteriaString.ToString();
+        }
+
+        private IUpdateSearcher GetUpdateSearcher()
+        {
+            var searcher = this.session.CreateUpdateSearcher();
+            searcher.Online = true;
+            searcher.ServerSelection = (ServerSelection)this.UpdateServerSelection;
+            return searcher;
         }
     }
 }
